@@ -7,7 +7,7 @@
     <ProjectGuid>{D66E292F-443E-40F3-B618-D3CDBF9D6481}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MCLangTool</RootNamespace>
+    <RootNamespace>Stealthware.MCLangTool</RootNamespace>
     <AssemblyName>MCLangTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter.cs" />
+    <Compile Include="CSV.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="GoogleSheets.cs" />
+    <Compile Include="Lang.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
