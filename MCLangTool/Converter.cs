@@ -14,6 +14,7 @@ namespace Stealthware.MCLangTool
 
         public string DevDir { get; set; }
         public string TranslationDir { get; set; }
+        public string SheetId { get; set; }
         public IList<Tuple<string, string>> ModList { get; set; }
 
         public Converter()
@@ -57,7 +58,9 @@ namespace Stealthware.MCLangTool
                         CSV.WriteFile(TranslationDir, mod, data);
                         break;
                     case IOFormat.GSheet:
-                        Console.WriteLine("NOT SUPPORTED");
+                        GoogleSheets.Authorise();
+                        Console.WriteLine("Writing sheet...");
+                        GoogleSheets.WriteSheet(SheetId, mod, data);
                         break;
                 }
 

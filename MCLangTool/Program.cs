@@ -66,6 +66,10 @@ namespace Stealthware.MCLangTool
                 {
                     converter.TranslationDir = item.Substring(item.IndexOf('=') + 1) + Path.DirectorySeparatorChar;
                 }
+                else if (item.StartsWith("/SheetId="))
+                {
+                    converter.SheetId = item.Substring(item.IndexOf('=') + 1);
+                }
                 else if (item.StartsWith("/Mod="))
                 {
                     string modArg = item.Substring(item.IndexOf('=') + 1);

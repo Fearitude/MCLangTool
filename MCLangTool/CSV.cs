@@ -114,7 +114,7 @@ namespace Stealthware.MCLangTool
 
         #region Helper Methods ...
 
-        private static string GetLanguageDescription(string langCode)
+        public static string GetLanguageDescription(string langCode)
         {
             try
             {
