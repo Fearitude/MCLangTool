@@ -200,13 +200,15 @@ namespace Stealthware.MCLangTool
                 cellMap.Add(Tuple.Create(cell.Column, cell.Row), cell);
             }
 
+            AtomFeed batch = cellFeed.CreateBatchFeed(GDataBatchOperationType.update);
+
             // populate header cells
-            SetCellValue(cellMap, 1, 1, "Key");
-            SetCellValue(cellMap, 2, 1, CSV.GetLanguageDescription(Converter.REF_LANG));
+            SetCellValue(cellMap, 1, 1, "Key", batch);
+            SetCellValue(cellMap, 2, 1, CSV.GetLanguageDescription(Converter.REF_LANG), batch);
             uint column = 3;
             foreach (var lang in langCodes)
             {
-                SetCellValue(cellMap, column++, 1, CSV.GetLanguageDescription(lang));
+                SetCellValue(cellMap, column++, 1, CSV.GetLanguageDescription(lang), batch);
             }
 
             // populate key and language value cells
@@ -221,8 +223,8 @@ namespace Stealthware.MCLangTool
                 }
                 lastPrefix = prefix;
 
-                SetCellValue(cellMap, 1, row, key);
-                SetCellValue(cellMap, 2, row, refLang[key]);
+                SetCellValue(cellMap, 1, row, key, batch);
+                SetCellValue(cellMap, 2, row, refLang[key], batch);
 
                 column = 3;
                 foreach (var lang in langCodes)
@@ -236,9 +238,21 @@ namespace Stealthware.MCLangTool
                     {
                         value = refLang[key];
                     }
-                    SetCellValue(cellMap, column++, row, value);
+                    SetCellValue(cellMap, column++, row, value, batch);
                 }
                 row++;
+            }
+
+            // Push all the updates to the server
+            CellFeed batchResponse = (CellFeed)service.Batch(batch, new Uri(cellFeed.Batch));
+
+            bool isSuccess = true;
+            foreach (CellEntry entry in batchResponse.Entries)
+            {
+                if (entry.BatchData.Status.Code != 200)
+                {
+                    throw new Exception("Failed to update a cell!");
+                }
             }
         }
 
@@ -258,11 +272,11 @@ namespace Stealthware.MCLangTool
             return keys.Count + blankCount;
         }
 
-        private static void SetCellValue(Dictionary<Tuple<uint, uint>, CellEntry> cellMap, uint col, uint row, string value)
+        private static void SetCellValue(Dictionary<Tuple<uint, uint>, CellEntry> cellMap, uint col, uint row, string value, AtomFeed batchRequest)
         {
             CellEntry cell = cellMap[Tuple.Create(col, row)];
             cell.InputValue = value;
-            cell.Update();
+            batchRequest.Entries.Add(cell);
         }
 
         private static WorksheetEntry FindWorkSheet(string name, SpreadsheetEntry spreadsheet)

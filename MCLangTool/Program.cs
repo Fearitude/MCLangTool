@@ -13,7 +13,7 @@ namespace Stealthware.MCLangTool
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Stealthware MCLangTool v0.2");
+            Console.WriteLine("Stealthware MCLangTool v0.3");
 
             if (args.Length == 1 && args[0].ToLowerInvariant().Contains("help"))
             {
