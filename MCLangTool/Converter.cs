@@ -43,7 +43,9 @@ namespace Stealthware.MCLangTool
                         data = CSV.ReadFile(TranslationDir, mod);
                         break;
                     case IOFormat.GSheet:
-                        Console.WriteLine("NOT SUPPORTED");
+                        GoogleSheets.Authorise();
+                        Console.WriteLine("Reading and processing sheet...");
+                        data = GoogleSheets.ReadSheet(SheetId, mod);
                         break;
                 }
 
